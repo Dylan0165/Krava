@@ -1,0 +1,9 @@
+﻿{
+  "servers": {
+    "cj-dropshipping": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["D:/Drava/api-mcp/dist/mcp-server/index.cjs"]
+    }
+  }
+}

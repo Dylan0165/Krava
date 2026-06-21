@@ -1,0 +1,146 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    @apply bg-ink text-bone font-body antialiased;
+    /* dark mode only */
+  }
+
+  ::selection {
+    background: #c8a96e;
+    color: #0a0a0a;
+  }
+
+  /* Sand-tinted scrollbar to match the brand */
+  * {
+    scrollbar-color: #2a2a2a #0a0a0a;
+  }
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #0a0a0a;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #2a2a2a;
+    border-radius: 0;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #3a3a3a;
+  }
+}
+
+@layer components {
+  /* Hairline divider used between editorial sections */
+  .rule {
+    @apply h-px w-full bg-seam;
+  }
+
+  /* Uppercase eyebrow / kicker label */
+  .eyebrow {
+    @apply font-display text-[11px] uppercase tracking-wide2 text-sand;
+  }
+
+  /* Outlined accent button — border style, no fill, per brand */
+  .btn-outline {
+    @apply relative inline-flex items-center justify-center gap-2.5 border border-sand
+      px-8 py-4 font-display text-[12px] uppercase tracking-brand text-sand
+      transition-all duration-300 ease-brand
+      hover:bg-sand hover:text-ink active:translate-y-[1px];
+  }
+
+  /* Solid ink button on accent surfaces */
+  .btn-solid {
+    @apply relative inline-flex items-center justify-center gap-2.5 bg-bone
+      px-8 py-4 font-display text-[12px] uppercase tracking-brand text-ink
+      transition-all duration-300 ease-brand
+      hover:bg-sand active:translate-y-[1px];
+  }
+}
+
+/* Hero scanline — the signature outdoor-camera sweep.
+   GPU-accelerated (transform only), confined to a pointer-events-none overlay. */
+.scanline-overlay {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+}
+.scanline-overlay::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 18vh;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(200, 169, 110, 0.05) 35%,
+    rgba(245, 240, 232, 0.12) 50%,
+    rgba(200, 169, 110, 0.05) 65%,
+    transparent 100%
+  );
+  will-change: transform;
+  animation: scanline 7s linear infinite;
+}
+
+/* Scoped film grain for the hero (subtle, sits over the video) */
+.hero-grain {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Faint horizontal CRT scan grid layered over hero media */
+.scan-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(10, 10, 10, 0) 0px,
+    rgba(10, 10, 10, 0) 2px,
+    rgba(10, 10, 10, 0.22) 3px,
+    rgba(10, 10, 10, 0) 4px
+  );
+  opacity: 0.5;
+}
+
+/* Fixed film grain — pointer-events-none, never on a scroll container */
+.grain {
+  position: fixed;
+  inset: -50%;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain-shift 8s steps(4) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scanline-overlay::before,
+  .grain {
+    animation: none;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
