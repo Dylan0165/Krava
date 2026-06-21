@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { MagnifyingGlass, Handbag, List, X } from "@phosphor-icons/react";
 import { useCart, selectCount } from "./cart/cart-store";
@@ -54,12 +55,15 @@ export function Nav() {
       >
         <nav className="mx-auto flex h-[68px] max-w-shell items-center justify-between px-5 md:px-10">
         {/* Logo */}
-        <Link
-          href="/"
-          className="font-display text-[19px] font-extrabold uppercase tracking-[0.34em] text-bone"
-          aria-label="KRAVA home"
-        >
-          KRAVA
+        <Link href="/" aria-label="KRAVA — home" className="flex items-center">
+          <Image
+            src="/logo.png"
+            alt="KRAVA"
+            width={868}
+            height={238}
+            priority
+            className="h-6 w-auto md:h-7"
+          />
         </Link>
 
         {/* Center links — desktop */}
