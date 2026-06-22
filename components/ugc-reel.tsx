@@ -6,15 +6,13 @@ type Clip = { src: string; label: string };
 
 const CLIPS: Clip[] = [
   { src: "/ads/cooling-towel-ugc.mp4", label: "Cooling Towel" },
-  { src: "/ads/bluetooth-speaker-ugc.mp4", label: "Bluetooth Speaker" },
-  { src: "/ads/water-bottle-ugc.mp4", label: "Folding Water Bottle" },
 ];
 
 export function UgcReel() {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Play each clip only while it's on screen; pause otherwise. Keeps three
-  // 9:16 videos from all decoding at once and hammering the GPU on mobile.
+  // Play the clip only while it's on screen; pause otherwise — avoids decoding
+  // a 9:16 video off-screen and hammering the GPU on mobile.
   useEffect(() => {
     const root = containerRef.current;
     if (!root) return;
@@ -41,10 +39,13 @@ export function UgcReel() {
   return (
     <div
       ref={containerRef}
-      className="grid grid-cols-1 gap-5 sm:grid-cols-3"
+      className="grid grid-cols-1 items-center gap-10 sm:grid-cols-2 lg:gap-16"
     >
       {CLIPS.map((clip) => (
-        <figure key={clip.src} className="group relative overflow-hidden bg-carbon">
+        <figure
+          key={clip.src}
+          className="group relative w-full max-w-[340px] overflow-hidden bg-carbon"
+        >
           <div className="relative aspect-[9/16]">
             <video
               className="absolute inset-0 h-full w-full object-cover"
@@ -61,6 +62,17 @@ export function UgcReel() {
           </figcaption>
         </figure>
       ))}
+
+      {/* Supporting copy balances the single vertical clip */}
+      <div className="max-w-[42ch]">
+        <p className="text-lg leading-relaxed text-bone/90">
+          Shot on a phone, not in a studio. Every piece earns its place outdoors
+          before it earns one in the range.
+        </p>
+        <p className="mt-4 text-sm leading-relaxed text-ash">
+          Real heat, real sweat, real days out — the only test that matters.
+        </p>
+      </div>
     </div>
   );
 }
